@@ -48,7 +48,7 @@ fn parallel_execution() {
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
-    println!("Took {:?} seconds", new_now.duration_since(now));
+    println!("Took {:?} seconds parallelized with two threads", new_now.duration_since(now));
 }
 
 fn sequential_execution() {
@@ -68,7 +68,7 @@ fn sequential_execution() {
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
-    println!("Took {:?} seconds", new_now.duration_since(now));
+    println!("Took {:?} seconds sequentially", new_now.duration_since(now));
 }
 fn main() {
     sequential_execution();
