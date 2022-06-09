@@ -1,3 +1,8 @@
+mod mpsc;
+mod seq;
+
 fn main() {
-    println!("Not currently implmemented!");
+    seq::sequential_execution();
+    println!("");
+    mpsc::parallel_execution();
 }

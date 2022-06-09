@@ -1,6 +1,6 @@
 use std::time;
 
-fn sequential_execution() {
+pub fn sequential_execution() {
     let now = time::Instant::now();
     let mut i: u32 = 1;
     let mut pi: f64 = 0.0;

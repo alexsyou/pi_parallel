@@ -2,7 +2,7 @@ use std::sync::mpsc;
 use std::thread;
 use std::time;
 
-fn parallel_execution() {
+pub fn parallel_execution() {
     let (tx, rx) = mpsc::channel();
 
     let precision: u32 = u32::MAX/2;
