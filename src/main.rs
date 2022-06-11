@@ -2,7 +2,8 @@ mod mpsc;
 mod seq;
 
 fn main() {
-    seq::sequential_execution();
+    let precision = 1 << 35; 
+    seq::sequential_execution(precision);
     println!("");
-    mpsc::parallel_execution();
+    mpsc::parallel_execution(64, precision);
 }
