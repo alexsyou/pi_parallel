@@ -9,4 +9,3 @@ mpsc - stdlib
 ## TO ADD
 
 Crossbeam, Rayon, Flume - Crates \\
-threads - stdlib
