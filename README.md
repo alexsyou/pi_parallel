@@ -8,5 +8,5 @@ mpsc - stdlib
 
 ## TO ADD
 
-Crossbeam, Rayon - Crates \\
+Crossbeam, Rayon, Flume - Crates \\
 threads - stdlib
