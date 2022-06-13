@@ -8,4 +8,4 @@ mpsc - stdlib
 
 ## TO ADD
 
-Crossbeam, Rayon, Flume - Crates \\
+Crossbeam, Rayon, Flume - Crates \
