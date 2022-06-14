@@ -1,22 +1,27 @@
 //!
 #![warn(missing_debug_implementations, missing_docs)]
 #![warn(
- clippy::all,
- clippy::restriction,
- clippy::pedantic,
- clippy::nursery,
- clippy::cargo,
+    clippy::all,
+    clippy::restriction,
+    clippy::pedantic,
+    clippy::nursery,
+    clippy::cargo
 )]
 
 mod mpsc;
+mod rayon;
 mod seq;
 
 fn main() {
-    let precision = 1 << 33; 
+    let precision: usize = 1 << 30;
 
     seq::sequential_execution(precision);
 
     println!();
 
     mpsc::parallel_execution(25, precision);
+
+    println!();
+
+    rayon::parallel_execution(8, precision);
 }

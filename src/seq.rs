@@ -1,5 +1,5 @@
-use std::time;
 use linya::{Bar, Progress};
+use std::time;
 
 const BAR_MAX: usize = 50;
 
@@ -13,26 +13,29 @@ pub fn sequential_execution(precision: usize) {
     let mut progress = Progress::new();
     let bar: Bar = progress.bar(BAR_MAX, "Finding pi sequentially: ");
 
-    let mut cutoff = precision/BAR_MAX;
+    let mut cutoff = precision / BAR_MAX;
 
     progress.set_and_draw(&bar, 1);
 
     while i < precision {
-        pi += 1.0/i as f64;
+        pi += 1.0 / i as f64;
 
         i += 2;
 
-        pi -= 1.0/i as f64;
+        pi -= 1.0 / i as f64;
 
         i += 2;
         if i > cutoff {
             progress.inc_and_draw(&bar, 1);
-            cutoff += precision/BAR_MAX;
+            cutoff += precision / BAR_MAX;
         }
     }
 
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
-    println!("Took {:?} seconds sequentially", new_now.duration_since(now));
+    println!(
+        "Took {:?} seconds sequentially",
+        new_now.duration_since(now)
+    );
 }
