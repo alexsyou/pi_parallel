@@ -90,5 +90,5 @@ pub fn parallel_execution(thread_count: usize, precision: usize) {
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
-    println!("Took {:?} seconds parallelized with {} threads", new_now.duration_since(now), thread_count);
+    println!("Took {:?} seconds parallelized with {} threads with mpsc", new_now.duration_since(now), thread_count);
 }

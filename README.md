@@ -7,6 +7,10 @@ Uses [linya](https://crates.io/crates/linya) for help with progress bars.
 
 mpsc - stdlib
 
+## IN PROGRESS
+
+Rayon
+
 ## TO ADD
 
-Crossbeam, Rayon, Flume - Crates \
+Crossbeam, Flume - Crates 

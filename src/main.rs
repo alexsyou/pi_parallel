@@ -12,11 +12,11 @@ mod mpsc;
 mod seq;
 
 fn main() {
-    let precision = 1 << 32; 
+    let precision = 1 << 33; 
 
     seq::sequential_execution(precision);
 
     println!();
 
-    mpsc::parallel_execution(16, precision);
+    mpsc::parallel_execution(25, precision);
 }
