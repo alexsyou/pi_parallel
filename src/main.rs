@@ -16,6 +16,7 @@ fn main() {
     let precision: usize = 1 << 30;
 
     seq::sequential_execution(precision);
+    seq::sequential_execution_iter(precision);
 
     println!();
 
@@ -23,5 +24,5 @@ fn main() {
 
     println!();
 
-    rayon::parallel_execution(8, precision);
+    rayon::parallel_execution(4, precision);
 }
