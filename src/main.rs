@@ -20,9 +20,9 @@ fn main() {
 
     println!();
 
-    mpsc::parallel_execution(25, precision);
+    mpsc::parallel_execution(8, precision);
 
     println!();
 
-    rayon::parallel_execution(4, precision);
+    rayon::parallel_execution(8, precision);
 }
