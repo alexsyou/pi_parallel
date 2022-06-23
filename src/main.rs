@@ -30,8 +30,4 @@ fn main() {
     println!();
 
     rayon::parallel_execution(8, precision);
-
-    println!();
-
-    rayon::parallel_execution_with_separate_threads(8, precision);
 }

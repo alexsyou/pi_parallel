@@ -10,11 +10,12 @@ To ensure the iterator is optimized properly, run in release mode. Otherwise, it
 ## CURRENTLY DONE
 
 mpsc - stdlib
+Rayon - crate
 
 ## IN PROGRESS
 
-Rayon
+Crossbeam
 
 ## TO ADD
 
-Crossbeam, Flume - Crates 
+Flume - Crates 
