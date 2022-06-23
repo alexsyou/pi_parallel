@@ -1,35 +1,15 @@
 use rayon::prelude::*;
 use rayon::current_thread_index;
 use std::time;
+use std::sync::{Mutex};
 
-// Imports for progress bars
-use linya::{Progress, Bar};
-use std::sync::{Mutex, Arc};
+// Linya Progress bars
+use linya::{Bar, Progress};
 
-const BAR_MAX: usize = 50;
+use crate::BAR_MAX;
 
 pub fn parallel_execution(thread_count: usize, precision: usize) {
-    // Sets the number of threads to be the thread_count
-    rayon::ThreadPoolBuilder::new()
-        .num_threads(thread_count)
-        .build_global()
-        .unwrap();
-
-
-    // Progress bar
-    let progress = Mutex::new(Progress::new());
-
-    /* First Attempt: using rayon par_iter to iterate through a vector of all indexes needed
-     * However, we cannot allocate this much memory
-        let num_idx: usize = precision / 2 + precision % 2;
-        let idxs = vec![0; num_idx];
-
-        let output_tuple: (Vec<usize>, Vec<usize>) = idxs
-            .iter()
-            .enumerate()
-            .map(|(idx, _)| (idx, idx * 2 + 1))
-            .unzip();
-    */
+    let now = time::Instant::now();
 
     /* Third Attempt: use par_iter better
      */
@@ -40,33 +20,12 @@ pub fn parallel_execution(thread_count: usize, precision: usize) {
         .build()
         .unwrap();
 
-
-    let mut bar_vec = Vec::new();
-    let progress_vec = Mutex::new(vec![0; thread_count]);
-    for i in 0..thread_count {
-        bar_vec.push(progress.lock().unwrap().bar(BAR_MAX, format!("Thread #{}", i)));
-    }
-
-    let now = time::Instant::now();
-
     let pi: f64 = pool.install(|| {
         (0..num_idx)
             .into_par_iter()
-            .map(|i| {
-                // let bar_num = current_thread_index().unwrap();
-                // let cur_max = progress_vec.lock().unwrap()[bar_num];
-                // if i > cur_max && cur_max < num_idx/thread_count {
-                //     progress.lock().unwrap().inc_and_draw(&bar_vec[bar_num], 1);
-                //     progress_vec.lock().unwrap()[bar_num] += num_idx/(50*thread_count);
-                // }
-                if i % 2 == 0 {
-                    1.0 / (i * 2 + 1) as f64
-                } else {
-                    -1.0 / (i * 2 + 1) as f64
-                }
-
-            })
-            .sum()
+            .fold(|| 0.0_f64, |acc: f64, i: usize| 
+                acc + if i % 2 == 0 { 1.0/(2*i+1) as f64 } else { -1.0/(2*i+1) as f64 })
+            .sum::<f64>()
     });
 
     println!("The value of pi is {}", pi * 4.0);
@@ -77,22 +36,72 @@ pub fn parallel_execution(thread_count: usize, precision: usize) {
         new_now.duration_since(now),
         thread_count
     );
+}
 
-    /* Second Attempt: use rayon scope to create multiple threads
-    let count_even = thread_count / 2;
-    let count_odd = thread_count / 2 + (thread_count % 2);
-    rayon::scope(|s| {
-        for c_e in 0..count_even {
-            s.spawn(|| {
-                let mut add_sum = 0.0;
-                let mut i = 1 + 4 * c_e;
+/* Second method of parallel_execution
+ * This is slower than the first one, but creates separate threads which can use linya progress
+ * bars
+ */
+pub fn parallel_execution_with_separate_threads(thread_count: usize, precision: usize) {
+    let now = time::Instant::now();
 
-                while i < precision {
-                    add_sum += 1.0 / i as f64;
-                    i += count_even * 4;
+    let progress = Mutex::new(Progress::new());
+
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(thread_count)
+        .build()
+        .unwrap();
+    
+    let pi: Mutex<f64> = Mutex::new(0.0);
+
+    pool.install(|| {
+        (0..thread_count).into_par_iter().for_each(|n| {
+            let bar: Bar = progress.lock().unwrap().bar(BAR_MAX, format!("Rayon Thread #{}", n));
+            progress.lock().unwrap().set_and_draw(&bar, 1);
+
+            let mut idx = n * 2 + 1;
+            let mut thread_pi: f64 = 0.0;
+
+            let mut cutoff = precision / BAR_MAX;
+
+            if n % 2 == 0 {
+                while idx < precision {
+                    thread_pi += 1.0 / idx as f64;
+
+                    idx += 2 * thread_count;
+
+                    if idx > cutoff {
+                        cutoff += precision / BAR_MAX;
+                        progress.lock().unwrap().inc_and_draw(&bar, 1);
+                    }
                 }
-            })
-        }
-    })
-    */
+            } else {
+                while idx < precision {
+                    thread_pi -= 1.0 / idx as f64;
+                    
+                    idx += 2 * thread_count;
+
+                    if idx > cutoff {
+                        cutoff += precision / BAR_MAX;
+                        progress.lock().unwrap().inc_and_draw(&bar, 1);
+                    }
+                }
+            }
+
+            let mut out_pi = pi.lock().unwrap();
+
+            *out_pi += thread_pi;
+            println!("{}", *out_pi);
+        });
+    });
+
+    let final_pi = pi.lock().unwrap();
+    println!("The value of pi is {}", *final_pi * 4.0);
+
+    let new_now = time::Instant::now();
+    println!(
+        "Took {:?} seconds parallelized with {} individual threads with rayon",
+        new_now.duration_since(now),
+        thread_count
+    );
 }

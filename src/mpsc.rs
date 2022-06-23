@@ -6,7 +6,7 @@ use std::time;
 use linya::Progress;
 use std::sync::{Arc, Mutex};
 
-const BAR_MAX: usize = 50;
+use crate::BAR_MAX;
 
 pub fn parallel_execution(thread_count: usize, precision: usize) {
     let (tx, rx) = mpsc::channel();

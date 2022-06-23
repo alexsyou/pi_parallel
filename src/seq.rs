@@ -1,7 +1,7 @@
 use linya::{Bar, Progress};
 use std::time;
 
-const BAR_MAX: usize = 50;
+use crate::BAR_MAX;
 
 pub fn sequential_execution(precision: usize) {
     let now = time::Instant::now();
