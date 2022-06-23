@@ -16,7 +16,7 @@ mod crossbeam;
 pub const BAR_MAX: usize = 50;
 
 fn main() {
-    let precision: usize = 1 << 30;
+    let precision: usize = 1 << 32;
 
     seq::sequential_execution(precision);
 
