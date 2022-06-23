@@ -1,7 +1,5 @@
 use rayon::prelude::*;
-use rayon::current_thread_index;
 use std::time;
-use std::sync::{Mutex};
 
 pub fn parallel_execution(thread_count: usize, precision: usize) {
     let now = time::Instant::now();

@@ -42,8 +42,6 @@ pub fn sequential_execution(precision: usize) {
 
 pub fn sequential_execution_iter(precision: usize) {
     let now = time::Instant::now();
-    let mut i: usize = 1;
-    let mut pi: f64 = 0.0;
 
     let num_idx = precision/2 + precision%2;
                         
