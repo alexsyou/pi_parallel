@@ -12,11 +12,12 @@ mod mpsc;
 mod rayon;
 mod seq;
 mod crossbeam;
+mod flume;
 
 pub const BAR_MAX: usize = 50;
 
 fn main() {
-    let precision: usize = 1 << 32;
+    let precision: usize = 1 << 34;
 
     seq::sequential_execution(precision);
 
@@ -35,4 +36,8 @@ fn main() {
     println!();
 
     crossbeam::parallel_execution(8, precision);
+
+    println!();
+
+    flume::parallel_execution(8, precision);
 }

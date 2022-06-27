@@ -1,4 +1,4 @@
-use crossbeam::channel::bounded;
+use crossbeam::channel::unbounded;
 use std::time;
 use crossbeam::thread;
 
@@ -11,7 +11,7 @@ use crate::BAR_MAX;
 pub fn parallel_execution(thread_count: usize, precision: usize) {
     let now = time::Instant::now();
 
-    let (s, r) = bounded(thread_count);
+    let (s, r) = unbounded();
     
     let count_even = thread_count / 2;
     let count_odd = thread_count / 2 + (thread_count % 2);

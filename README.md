@@ -11,11 +11,12 @@ To ensure the iterator is optimized properly, run in release mode. Otherwise, it
 
 mpsc - stdlib
 Rayon - crate
+Crossbeam - crate
 
 ## IN PROGRESS
 
-Crossbeam
+Flume
 
 ## TO ADD
 
-Flume - Crates 
+Plotters
