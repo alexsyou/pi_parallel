@@ -4,9 +4,9 @@ use std::time;
 use linya::Progress;
 use std::sync::{Arc, Mutex};
 
-use crate::BAR_MAX;
+use crate::{PRECISION, BAR_MAX};
 
-pub fn parallel_execution(thread_count: usize, precision: usize) {
+pub fn parallel_execution(thread_count: usize) {
     let now = time::Instant::now();
 
     let (tx, rx) = flume::unbounded();
@@ -31,15 +31,15 @@ pub fn parallel_execution(thread_count: usize, precision: usize) {
             let mut add_sum = 0.0;
             let mut i = 1 + 4 * c_e;
 
-            let mut cutoff = precision / BAR_MAX;
+            let mut cutoff = PRECISION / BAR_MAX;
 
-            while i < precision {
+            while i < PRECISION {
                 add_sum += 1.0 / i as f64;
                 i += count_even * 4;
 
                 if i > cutoff {
                     arc.lock().unwrap().inc_and_draw(&bar, 1);
-                    cutoff += precision / BAR_MAX;
+                    cutoff += PRECISION / BAR_MAX;
                 }
             }
 
@@ -61,15 +61,15 @@ pub fn parallel_execution(thread_count: usize, precision: usize) {
             let mut sub_sum = 0.0;
             let mut i = 3 + 4 * c_o;
 
-            let mut cutoff = precision / BAR_MAX;
+            let mut cutoff = PRECISION / BAR_MAX;
 
-            while i < precision {
+            while i < PRECISION {
                 sub_sum -= 1.0 / i as f64;
                 i += count_odd * 4;
 
                 if i > cutoff {
                     arc.lock().unwrap().inc_and_draw(&bar, 1);
-                    cutoff += precision / BAR_MAX;
+                    cutoff += PRECISION / BAR_MAX;
                 }
             }
 

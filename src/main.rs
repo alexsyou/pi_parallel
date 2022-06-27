@@ -8,36 +8,35 @@
     clippy::cargo
 )]
 
+mod crossbeam;
+mod flume;
 mod mpsc;
 mod rayon;
 mod seq;
-mod crossbeam;
-mod flume;
 
 pub const BAR_MAX: usize = 50;
+pub const PRECISION: usize = 1 << 34;
 
 fn main() {
-    let precision: usize = 1 << 34;
-
-    seq::sequential_execution(precision);
+    seq::sequential_execution();
 
     println!();
 
-    seq::sequential_execution_iter(precision);
+    seq::sequential_execution_iter();
 
     println!();
 
-    mpsc::parallel_execution(8, precision);
+    mpsc::parallel_execution(8);
 
     println!();
 
-    rayon::parallel_execution(8, precision);
+    rayon::parallel_execution(8);
 
     println!();
 
-    crossbeam::parallel_execution(8, precision);
+    crossbeam::parallel_execution(8);
 
     println!();
 
-    flume::parallel_execution(8, precision);
+    flume::parallel_execution(8);
 }
