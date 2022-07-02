@@ -13,30 +13,41 @@ mod flume;
 mod mpsc;
 mod rayon;
 mod seq;
+mod plot;
 
 pub const BAR_MAX: usize = 50;
-pub const PRECISION: usize = 1 << 34;
+pub const PRECISION: usize = 1 << 32;
 
 fn main() {
-    seq::sequential_execution();
+    let sw_time: f64 = seq::sequential_execution_while();
 
     println!();
 
-    seq::sequential_execution_iter();
+    let si_time:f64 = seq::sequential_execution_iter();
 
     println!();
 
-    mpsc::parallel_execution(8);
+    let mut idx = 2;
+    let mut mpsc_vec = Vec::new();
+    let mut rayon_vec = Vec::new();
+    let mut crossbeam_vec = Vec::new();
+    let mut flume_vec = Vec::new();
 
-    println!();
+    while idx <= 64 {
+        mpsc_vec.push(mpsc::parallel_execution(idx)); 
+        println!();
 
-    rayon::parallel_execution(8);
+        rayon_vec.push(rayon::parallel_execution(idx));
+        println!();
 
-    println!();
+        crossbeam_vec.push(crossbeam::parallel_execution(idx));
+        println!();
 
-    crossbeam::parallel_execution(8);
+        flume_vec.push(flume::parallel_execution(idx));
+        println!();
 
-    println!();
-
-    flume::parallel_execution(8);
+        idx *= 2;
+    }
+    
+    plot::plot(sw_time, si_time, &mpsc_vec, &rayon_vec, &crossbeam_vec, &flume_vec);
 }

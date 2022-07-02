@@ -8,7 +8,7 @@ use std::sync::{Arc, Mutex};
 
 use crate::{BAR_MAX, PRECISION};
 
-pub fn parallel_execution(thread_count: usize) {
+pub fn parallel_execution(thread_count: usize) -> f64 {
     let now = time::Instant::now();
 
     let (tx, rx) = mpsc::channel();
@@ -92,9 +92,11 @@ pub fn parallel_execution(thread_count: usize) {
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
+    let time = new_now.duration_since(now);
     println!(
         "Took {:?} seconds parallelized with {} threads with mpsc",
-        new_now.duration_since(now),
+        time,
         thread_count
     );
+    time.as_secs_f64()
 }

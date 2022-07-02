@@ -3,7 +3,7 @@ use std::time;
 
 use crate::{PRECISION, BAR_MAX};
 
-pub fn sequential_execution() {
+pub fn sequential_execution_while() -> f64 {
     let now = time::Instant::now();
     let mut i: usize = 1;
     let mut pi: f64 = 0.0;
@@ -34,13 +34,15 @@ pub fn sequential_execution() {
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
+    let time = new_now.duration_since(now);
     println!(
         "Took {:?} seconds sequentially",
-        new_now.duration_since(now)
+        time
     );
+    time.as_secs_f64()
 }
 
-pub fn sequential_execution_iter() {
+pub fn sequential_execution_iter() -> f64 {
     let now = time::Instant::now();
 
     let num_idx = PRECISION / 2 + PRECISION % 2;
@@ -56,8 +58,10 @@ pub fn sequential_execution_iter() {
     println!("The value of pi is {}", pi * 4.0);
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
+    let time = new_now.duration_since(now);
     println!(
         "Took {:?} seconds sequentially with iterator",
-        new_now.duration_since(now)
+        time
     );
+    time.as_secs_f64()
 }

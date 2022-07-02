@@ -8,7 +8,7 @@ use std::sync::{Arc, Mutex};
 
 use crate::{PRECISION, BAR_MAX};
 
-pub fn parallel_execution(thread_count: usize) {
+pub fn parallel_execution(thread_count: usize) -> f64 {
     let now = time::Instant::now();
 
     let (s, r) = unbounded();
@@ -88,9 +88,11 @@ pub fn parallel_execution(thread_count: usize) {
     println!("The value of pi is {}", pi * 4.0);
 
     let new_now = time::Instant::now();
+    let time = new_now.duration_since(now);
     println!(
         "Took {:?} seconds parallelized with {} threads with crossbeam channels",
-        new_now.duration_since(now),
+        time,
         thread_count
     );
+    time.as_secs_f64()
 }
