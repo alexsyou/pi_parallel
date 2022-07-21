@@ -1,7 +1,5 @@
 use plotters::prelude::*;
 
-use crate::PRECISION;
-
 pub fn plot(sw_time: f64, si_time: f64, mpsc_vec: &Vec<f64>, rayon_vec: &Vec<f64>, crossbeam_vec: &Vec<f64>, flume_vec: &Vec<f64>) {
     let root_area = BitMapBackend::new("images/pi_comparison.png", (600, 400))
           .into_drawing_area();
@@ -87,7 +85,7 @@ pub fn plot(sw_time: f64, si_time: f64, mpsc_vec: &Vec<f64>, rayon_vec: &Vec<f64
             6,
             &MAGENTA,
             &|c, s, st| {
-                return EmptyElement::at(c) + Circle::new((0,0),s,st.filled());
+                return EmptyElement::at(c) + TriangleMarker::new((0,0),s,st.filled());
           },
     )).unwrap();
 }

@@ -65,3 +65,24 @@ pub fn sequential_execution_iter() -> f64 {
     );
     time.as_secs_f64()
 }
+
+pub fn sequential_execution_step() -> f64 {
+    let now = time::Instant::now();
+
+    let pi: f64 = (1..PRECISION).into_iter().step_by(2).fold(0.0, |acc, i| {
+        acc + if ((i - 1) % 4) == 0 {
+            1.0 / i as f64
+        } else {
+            -1.0 / i as f64
+        }
+    });
+
+    println!("Pi is {}", pi*4.0);
+    let new_now = time::Instant::now();
+    let time = new_now.duration_since(now);
+    println!(
+        "Took {:?} seconds with step",
+        time
+    );
+    time.as_secs_f64()
+}

@@ -13,9 +13,4 @@ mpsc - stdlib
 Rayon - crate
 Crossbeam - crate
 Flume - crate
-
-## IN PROGRESS
-
 Plotters
-## TO ADD
-

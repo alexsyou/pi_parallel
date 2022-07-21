@@ -27,6 +27,10 @@ fn main() {
 
     println!();
 
+    let ss_time: f64 = seq::sequential_execution_step();
+
+    println!();
+
     let mut idx = 2;
     let mut mpsc_vec = Vec::new();
     let mut rayon_vec = Vec::new();

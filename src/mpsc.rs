@@ -1,3 +1,4 @@
+use std::num;
 use std::sync::mpsc;
 use std::thread;
 use std::time;
@@ -99,4 +100,9 @@ pub fn parallel_execution(thread_count: usize) -> f64 {
         thread_count
     );
     time.as_secs_f64()
+}
+
+//TODO: Finish parallel_execution_iter() :)
+pub fn parallel_execution_iter(thread_count: usize) -> f64 {
+    todo!();
 }
