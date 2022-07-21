@@ -2,11 +2,7 @@ use crossbeam::channel::unbounded;
 use crossbeam::thread;
 use std::time;
 
-// Progress bars :)
-use linya::Progress;
-use std::sync::{Arc, Mutex};
-
-use crate::{BAR_MAX, PRECISION};
+use crate::PRECISION;
 
 /* This function is deprecated
 pub fn parallel_execution(thread_count: usize) -> f64 {

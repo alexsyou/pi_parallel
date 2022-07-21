@@ -15,7 +15,7 @@ mod plot;
 mod rayon;
 mod seq;
 
-pub const BAR_MAX: usize = 50;
+/// PRECISION defines how far we run the code to calculate pi
 pub const PRECISION: usize = 1 << 32;
 
 fn main() {
@@ -62,7 +62,6 @@ fn main() {
 
         idx *= 2;
     }
-
 
     println!("Plotting comparison plot at images/pi_comparison.png");
     plot::plot(si_time, &mpsc_vec, &rayon_vec, &crossbeam_vec, &flume_vec);

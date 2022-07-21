@@ -1,13 +1,10 @@
-use std::num;
 use std::sync::mpsc;
 use std::thread;
 use std::time;
 
 // Imports for progress bars
-use linya::Progress;
-use std::sync::{Arc, Mutex};
 
-use crate::{BAR_MAX, PRECISION};
+use crate::PRECISION;
 
 /* This function is deprecated
 pub fn parallel_execution(thread_count: usize) -> f64 {

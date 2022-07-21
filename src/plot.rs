@@ -107,5 +107,13 @@ pub fn plot(
     .label("flume")
     .legend(|(x, y)| Circle::new((x - 10, y), 5, MAGENTA.filled()));
 
-    ctx.configure_series_labels().position(SeriesLabelPosition::UpperRight).margin(20).legend_area_size(5).border_style(CYAN).background_style(CYAN.mix(0.1)).label_font(("sans-serif", 20)).draw().unwrap();
+    ctx.configure_series_labels()
+        .position(SeriesLabelPosition::UpperRight)
+        .margin(20)
+        .legend_area_size(5)
+        .border_style(CYAN)
+        .background_style(CYAN.mix(0.1))
+        .label_font(("sans-serif", 20))
+        .draw()
+        .unwrap();
 }
