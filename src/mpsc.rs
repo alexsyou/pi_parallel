@@ -108,13 +108,13 @@ pub fn parallel_execution(thread_count: usize) -> f64 {
 
     let (tx, rx) = mpsc::channel();
 
-
     for t in 0..thread_count {
         let tx = tx.clone();
 
         thread::spawn(move || {
             let init_val: usize = t * 2 + 1;
-            let local_pi: f64 = (init_val..PRECISION).into_iter()
+            let local_pi: f64 = (init_val..PRECISION)
+                .into_iter()
                 .step_by(2 * thread_count)
                 .fold(0.0, |acc, i| {
                     acc + if ((i - 1) % 4) == 0 {

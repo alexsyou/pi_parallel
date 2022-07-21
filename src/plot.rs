@@ -1,7 +1,8 @@
 use plotters::prelude::*;
 
+use crate::PRECISION;
+
 pub fn plot(
-    sw_time: f64,
     si_time: f64,
     mpsc_vec: &Vec<f64>,
     rayon_vec: &Vec<f64>,
@@ -11,11 +12,13 @@ pub fn plot(
     let root_area = BitMapBackend::new("images/pi_comparison.png", (600, 400)).into_drawing_area();
     root_area.fill(&WHITE).unwrap();
 
+    let max_size = ((PRECISION >> 32) * 4) as f64;
+
     let mut ctx = ChartBuilder::on(&root_area)
         .set_label_area_size(LabelAreaPosition::Left, 40)
         .set_label_area_size(LabelAreaPosition::Bottom, 40)
         .caption("Pi Comparison", ("sans-serif", 40))
-        .build_cartesian_2d(1u32..72u32, 0f64..6f64)
+        .build_cartesian_2d(0u32..72u32, 0f64..max_size)
         .unwrap();
 
     ctx.configure_mesh().draw().unwrap();
@@ -45,62 +48,64 @@ pub fn plot(
         .collect();
 
     ctx.draw_series(PointSeries::of_element(
-        vec![(1, sw_time)],
-        1,
-        &RED,
-        &|c, s, st| {
-            return EmptyElement::at(c) + Circle::new((0, 0), s, st.filled());
-        },
-    ))
-    .unwrap();
-
-    ctx.draw_series(PointSeries::of_element(
         vec![(1, si_time)],
         1,
         &BLUE,
-        &|c, s, st| {
-            return EmptyElement::at(c) + Circle::new((0, 0), s, st.filled());
+        &|c, _s, st| {
+            return EmptyElement::at(c) + Circle::new((0, 0), 2, st.filled());
         },
     ))
-    .unwrap();
+    .unwrap()
+    .label("sequential")
+    .legend(|(x, y)| Circle::new((x - 10, y), 5, BLUE.filled()));
 
     ctx.draw_series(PointSeries::of_element(
         mpsc_vec,
         6,
         &YELLOW,
-        &|c, s, st| {
-            return EmptyElement::at(c) + Circle::new((0, 0), s, st.filled());
+        &|c, _s, st| {
+            return EmptyElement::at(c) + Circle::new((0, 0), 2, st.filled());
         },
     ))
-    .unwrap();
+    .unwrap()
+    .label("mpsc")
+    .legend(|(x, y)| Circle::new((x - 10, y), 5, YELLOW.filled()));
 
     ctx.draw_series(PointSeries::of_element(
         rayon_vec,
         6,
         &BLACK,
-        &|c, s, st| {
-            return EmptyElement::at(c) + Circle::new((0, 0), s, st.filled());
+        &|c, _s, st| {
+            return EmptyElement::at(c) + Circle::new((0, 0), 2, st.filled());
         },
     ))
-    .unwrap();
+    .unwrap()
+    .label("rayon")
+    .legend(|(x, y)| Circle::new((x - 10, y), 5, BLACK.filled()));
 
     ctx.draw_series(PointSeries::of_element(
         crossbeam_vec,
         6,
         &GREEN,
-        &|c, s, st| {
-            return EmptyElement::at(c) + Circle::new((0, 0), s, st.filled());
+        &|c, _s, st| {
+            return EmptyElement::at(c) + Circle::new((0, 0), 2, st.filled());
         },
     ))
-    .unwrap();
+    .unwrap()
+    .label("crossbeam")
+    .legend(|(x, y)| Circle::new((x - 10, y), 5, GREEN.filled()));
 
     ctx.draw_series(PointSeries::of_element(
         flume_vec,
         6,
         &MAGENTA,
-        &|c, s, st| {
-            return EmptyElement::at(c) + TriangleMarker::new((0, 0), s, st.filled());
+        &|c, _s, st| {
+            return EmptyElement::at(c) + Circle::new((0, 0), 2, st.filled());
         },
     ))
-    .unwrap();
+    .unwrap()
+    .label("flume")
+    .legend(|(x, y)| Circle::new((x - 10, y), 5, MAGENTA.filled()));
+
+    ctx.configure_series_labels().position(SeriesLabelPosition::UpperRight).margin(20).legend_area_size(5).border_style(CYAN).background_style(CYAN.mix(0.1)).label_font(("sans-serif", 20)).draw().unwrap();
 }
