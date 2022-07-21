@@ -1,7 +1,7 @@
 use linya::{Bar, Progress};
 use std::time;
 
-use crate::{PRECISION, BAR_MAX};
+use crate::{BAR_MAX, PRECISION};
 
 pub fn sequential_execution_while() -> f64 {
     let now = time::Instant::now();
@@ -35,10 +35,7 @@ pub fn sequential_execution_while() -> f64 {
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
     let time = new_now.duration_since(now);
-    println!(
-        "Took {:?} seconds sequentially",
-        time
-    );
+    println!("Took {:?} seconds sequentially", time);
     time.as_secs_f64()
 }
 
@@ -59,10 +56,7 @@ pub fn sequential_execution_iter() -> f64 {
     //let elapsed_time = now.elapsed();
     let new_now = time::Instant::now();
     let time = new_now.duration_since(now);
-    println!(
-        "Took {:?} seconds sequentially with iterator",
-        time
-    );
+    println!("Took {:?} seconds sequentially with iterator", time);
     time.as_secs_f64()
 }
 
@@ -77,12 +71,9 @@ pub fn sequential_execution_step() -> f64 {
         }
     });
 
-    println!("Pi is {}", pi*4.0);
+    println!("Pi is {}", pi * 4.0);
     let new_now = time::Instant::now();
     let time = new_now.duration_since(now);
-    println!(
-        "Took {:?} seconds with step",
-        time
-    );
+    println!("Took {:?} seconds with step", time);
     time.as_secs_f64()
 }

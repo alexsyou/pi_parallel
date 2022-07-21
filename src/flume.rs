@@ -4,7 +4,7 @@ use std::time;
 use linya::Progress;
 use std::sync::{Arc, Mutex};
 
-use crate::{PRECISION, BAR_MAX};
+use crate::{BAR_MAX, PRECISION};
 
 pub fn parallel_execution(thread_count: usize) -> f64 {
     let now = time::Instant::now();
@@ -88,8 +88,7 @@ pub fn parallel_execution(thread_count: usize) -> f64 {
     let time = new_now.duration_since(now);
     println!(
         "Took {:?} seconds parallelized with {} threads with flume channels",
-        time,
-        thread_count
+        time, thread_count
     );
     time.as_secs_f64()
 }

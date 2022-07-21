@@ -11,9 +11,9 @@
 mod crossbeam;
 mod flume;
 mod mpsc;
+mod plot;
 mod rayon;
 mod seq;
-mod plot;
 
 pub const BAR_MAX: usize = 50;
 pub const PRECISION: usize = 1 << 32;
@@ -23,7 +23,7 @@ fn main() {
 
     println!();
 
-    let si_time:f64 = seq::sequential_execution_iter();
+    let si_time: f64 = seq::sequential_execution_iter();
 
     println!();
 
@@ -38,7 +38,7 @@ fn main() {
     let mut flume_vec = Vec::new();
 
     while idx <= 64 {
-        mpsc_vec.push(mpsc::parallel_execution(idx)); 
+        mpsc_vec.push(mpsc::parallel_execution(idx));
         println!();
 
         rayon_vec.push(rayon::parallel_execution(idx));
@@ -52,6 +52,13 @@ fn main() {
 
         idx *= 2;
     }
-    
-    plot::plot(sw_time, si_time, &mpsc_vec, &rayon_vec, &crossbeam_vec, &flume_vec);
+
+    plot::plot(
+        sw_time,
+        si_time,
+        &mpsc_vec,
+        &rayon_vec,
+        &crossbeam_vec,
+        &flume_vec,
+    );
 }

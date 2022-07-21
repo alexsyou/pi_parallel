@@ -1,4 +1,5 @@
-use rayon::prelude::*; use std::time;
+use rayon::prelude::*;
+use std::time;
 
 use crate::PRECISION;
 
@@ -33,8 +34,7 @@ pub fn parallel_execution(thread_count: usize) -> f64 {
     let time = new_now.duration_since(now);
     println!(
         "Took {:?} seconds parallelized with {} threads with rayon",
-        time,
-        thread_count
+        time, thread_count
     );
     time.as_secs_f64()
 }
