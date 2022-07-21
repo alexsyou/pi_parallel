@@ -8,6 +8,7 @@ use std::sync::{Arc, Mutex};
 
 use crate::{BAR_MAX, PRECISION};
 
+/* This function is deprecated
 pub fn parallel_execution(thread_count: usize) -> f64 {
     let now = time::Instant::now();
 
@@ -87,6 +88,47 @@ pub fn parallel_execution(thread_count: usize) -> f64 {
 
     println!("The value of pi is {}", pi * 4.0);
 
+    let new_now = time::Instant::now();
+    let time = new_now.duration_since(now);
+    println!(
+        "Took {:?} seconds parallelized with {} threads with crossbeam channels",
+        time, thread_count
+    );
+    time.as_secs_f64()
+}
+*/
+
+pub fn parallel_execution(thread_count: usize) -> f64 {
+    let now = time::Instant::now();
+
+    let (s, r) = unbounded();
+
+    thread::scope(|sco| {
+        for t in 0..thread_count {
+            let s = s.clone();
+
+            sco.spawn(move |_| {
+                let init_val: usize = t * 2 + 1;
+                let local_pi: f64 = (init_val..PRECISION).into_iter()
+                    .step_by(2 * thread_count)
+                    .fold(0.0, |acc, i| {
+                        acc + if ((i - 1) % 4) == 0 {
+                            1.0 / i as f64
+                        } else {
+                            -1.0 / i as f64
+                        }
+                    });
+                s.send(local_pi).unwrap();
+            });
+        }
+    })
+    .unwrap();
+
+    drop(s);
+
+    let pi: f64 = r.iter().sum();
+
+    println!("The value of pi is {}", pi * 4.0);
     let new_now = time::Instant::now();
     let time = new_now.duration_since(now);
     println!(
