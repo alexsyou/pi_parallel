@@ -19,6 +19,8 @@ This program compares multiple crates for parallel computation in the Rust ecosy
 
 The results of the comparison is generated as a image using the [plotters](https://docs.rs/plotters/0.3.2/plotters/) library, and stored in /images/pi_comparison.png.
 
+[Comparison of pi from pi_parallel](/images/pi_comparison.png)
+
 
 ## Installation
 ```shell
